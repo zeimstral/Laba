@@ -1,1 +1,40 @@
-dotnet test --no-build --verbosity normal
+name: .NET Core CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0.x'  # Или нужная вам версия
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build main app
+        run: |
+          cd src
+          dotnet build --configuration Release --no-restore
+
+      - name: Build tests
+        run: |
+          cd tests
+          dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: |
+          cd tests
+          dotnet test --no-build --verbosity normal
