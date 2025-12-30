@@ -141,10 +141,6 @@ namespace ClassFunctions
             }
             return result.ToString();
         }
-        public static void Main()
-        {
-
-        }
     }
 
 }
