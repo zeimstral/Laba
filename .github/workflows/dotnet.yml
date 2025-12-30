@@ -13,28 +13,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '8.0.x'  # Или нужная вам версия
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'  # обновите до нужной версии
 
-      - name: Restore dependencies
-        run: dotnet restore
+    - name: Restore dependencies
+      run: dotnet restore ./Test.csproj
 
-      - name: Build main app
-        run: |
-          cd src
-          dotnet build --configuration Release --no-restore
+    - name: Build
+      run: |
+        dotnet build ./Test.csproj --configuration Release --no-restore
 
-      - name: Build tests
-        run: |
-          cd tests
-          dotnet build --configuration Release --no-restore
+    - name: Build Tests
+      run: |
+        dotnet build ./tests/NUnitTestItem1.csproj --configuration Release --no-restore
 
-      - name: Run tests
-        run: |
-          cd tests
-          dotnet test --no-build --verbosity normal
+    - name: Run Tests
+      run: |
+        dotnet test ./tests/NUnitTestItem1.csproj --no-build --logger "trx"
